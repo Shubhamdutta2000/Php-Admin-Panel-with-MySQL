@@ -1,5 +1,5 @@
 # Php-Admin-Panel
-> Admin panel where admin can able to add tender and eoi with pdf upload feature.
+> Admin panel where admin can able to add, view and delete tender and eoi with pdf upload feature with proper authentication with mysql database.
 
 <br />
 
@@ -48,3 +48,5 @@
 <br />
 <br />
 
+## License
+- MIT
