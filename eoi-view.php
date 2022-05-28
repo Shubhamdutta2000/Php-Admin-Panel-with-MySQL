@@ -132,6 +132,7 @@
               <tbody><tr>
                 <td width="10%" class="blackbold">&nbsp;</td>
                 <td width="90%" class="blackbold">&nbsp;<a href="PDFs/<?php echo $post['pdfName'] ?>" target="_blank"><br /><strong><?php echo $post['pdfName'] ?></strong></a><br>Filetype: PDF<br />
+                <td width="90%" class="blackbold">&nbsp;<a href="PDFs/<?php echo $post['pdfTwo'] ?>" target="_blank"><br /><strong><?php echo $post['pdfTwo'] ?></strong></a><br>Filetype: PDF<br />
             &nbsp;  
                 
                 </td>

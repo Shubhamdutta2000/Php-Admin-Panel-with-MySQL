@@ -47,29 +47,38 @@ else{
             </script>'  ;
         } 
         else{
-            if(isset($_FILES['pdf'])) {// check if the image is uploaded or not
-                $pdf_name = $_FILES['pdf']['name']; //this will hold usser uploaded pdf name
-                $pdf_type = $_FILES['pdf']['type']; //this will hold usser uploaded pdf type
-                $tmp_name = $_FILES['pdf']['tmp_name']; //this temp name will help to save or move this im file to our folder where i store the all user uploaded image
-    
+            if(isset($_FILES['pdfOne']) && isset($_FILES['pdfTwo'])) {// check if the image is uploaded or not
+                $pdf_one_name = $_FILES['pdfOne']['name']; //this will hold usser uploaded pdf name
+                $pdf_one_type = $_FILES['pdfOne']['type']; //this will hold usser uploaded pdf type
+                $tmp_one_name = $_FILES['pdfOne']['tmp_name']; //this temp name will help to save or move this im file to our folder where i store the all user uploaded pdf
+                
+                $pdf_two_name = $_FILES['pdfTwo']['name']; //this will hold usser uploaded pdf name
+                $pdf_two_type = $_FILES['pdfTwo']['type']; //this will hold usser uploaded pdf type
+                $tmp_two_name = $_FILES['pdfTwo']['tmp_name']; //this temp name will help to save or move this im file to our folder where i store the all user uploaded pdf
     
                 //now explode the pdf and get the extentions of the file
-                $pdf_explode = explode('.', $pdf_name);
-                $pdf_ext = end($pdf_explode); //here we get the extension of the pdf file 
+                $pdf_one_explode = explode('.', $pdf_one_name);
+                $pdf_one_ext = end($pdf_one_explode); //here we get the extension of the pdf file 
+                
+                //now explode the pdf and get the extentions of the file
+                $pdf_two_explode = explode('.', $pdf_two_name);
+                $pdf_two_ext = end($pdf_two_explode); //here we get the extension of the pdf file 
+ 
     
                 $extensions = ['pdf','PDF']; // storing all supported formate of pdf in this array
-                if(in_array($pdf_ext, $extensions) == true) {// if the user uploaded file extensions matched with availabe extesion
+                if(in_array($pdf_one_ext, $extensions) == true && in_array($pdf_two_ext, $extensions) == true) {// if the user uploaded file extensions matched with availabe extesion
                     $time = time(); // hold current time in a var
                                     //when a user upload a pdf the current time will added with the file name
                                     //so all pdf file have a unique name
                     //lets now move the user uloaded pdf to our particular folder
-                    $new_pdf_name = $time.$pdf_name;
-                    if(move_uploaded_file($tmp_name, "PDFs/".$new_pdf_name)){//if user upload pdf move to our folder successfully
+                    $new_pdf_one_name = $time.$pdf_one_name;
+                    $new_pdf_two_name = $time.$pdf_two_name;
+                    if(move_uploaded_file($tmp_one_name, "PDFs/".$new_pdf_one_name) && move_uploaded_file($tmp_two_name, "PDFs/".$new_pdf_two_name)){//if user upload pdf move to our folder successfully
                         //now let's insert all the user data to the data base
     
                         $sql2 = "INSERT INTO `eoitable` 
-                                (`unitName`, `eoiDetails`, `eoiNum`, `dateOfEoiPub`, `closingDateTime`, `pdfName`,`biddingInstruction`,`bidderPreQualification`) 
-                                VALUES ('$unitName', '$eoiDetails', '$eoiNum',  '$dateOfEoiPub', '$closingDateTime', '$new_pdf_name', '$biddingInstruction', '$bidderPreQualification')";
+                                (`unitName`, `eoiDetails`, `eoiNum`, `dateOfEoiPub`, `closingDateTime`, `pdfName`,`biddingInstruction`,`bidderPreQualification`, `pdfTwo`) 
+                                VALUES ('$unitName', '$eoiDetails', '$eoiNum',  '$dateOfEoiPub', '$closingDateTime', '$new_pdf_one_name', '$biddingInstruction', '$bidderPreQualification', '$new_pdf_two_name')";
                         $insert_data = mysqli_query($conn, $sql2);
                         if($insert_data){ //if data is inserted
                             echo '<script type="text/JavaScript"> 
@@ -116,7 +125,6 @@ else{
 
         // data is successfuly deleted from grse table then redirect to home page
         if(mysqli_query($conn, $query)) {
-            echo ROOT_URL;
             header('Location: '. ROOT_URL_EOI . '');
         }else {
             echo "ERROR: ". mysqli_error($conn);
@@ -204,8 +212,10 @@ else{
                     <input type="text" name="bidderPreQualification" class="form-control bg-secondary" id="emd" placeholder="Bidder's Pre Qualification" />
                 </div>
                 <div class="form-group">
-                    <label for="formFile" class="form-label mt-4">Upload pdf</label>
-                    <input class="form-control bg-secondary" type="file" name='pdf' id="formFile" require />
+                    <label for="formFile" class="form-label mt-4">Upload PDF one</label>
+                    <input class="form-control bg-secondary" type="file" name='pdfOne' id="formFile" require />
+                    <label for="formFile" class="form-label mt-4">Upload PDF two</label>
+                    <input class="form-control bg-secondary" type="file" name='pdfTwo' id="formFile" require />
                     <label for="formFile" class="form-label mt-4">Only PDF allowed</label>
                 </div>
 
